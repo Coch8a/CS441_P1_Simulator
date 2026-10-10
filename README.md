@@ -1,7 +1,5 @@
 # Run Instructions
 
-# Run Instructions
-
 Open the project folder in VS Code and open a Git Bash terminal.
 
 Make sure the benchmark files are in the root project folder:

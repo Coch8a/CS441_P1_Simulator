@@ -19,6 +19,11 @@ Run the simulator in run through mode:
 ./isaSim -r MAXFINDER_INT.asm MAXFINDER_INT.mem
 ./isaSim -r MAXFINDER_FP.asm MAXFINDER_FP.mem
 
+Run the simulator in step through mode:
+./isaSim -s Benchmark_ISA.asm Benchmark_ISA.mem
+./isaSim -s MAXFINDER_INT.asm MAXFINDER_INT.mem
+./isaSim -s MAXFINDER_FP.asm MAXFINDER_FP.mem
+
 After the simulator finishes, it will create:
 MAXFINDER_FP.instrCount
 MAXFINDER_FP.mem.out
@@ -37,7 +42,7 @@ From the project directory:
 ```bash
 chmod +x build.sh isaSim
 ./build.sh
-./isaSim -r <assembly file> <memory file>
+./isaSim [-r|-s] <assembly file> <memory file>
 ```
 
 Example:
@@ -48,7 +53,7 @@ Example:
 
 The simulator writes `<benchmarkName>.instrCount` and `<benchmarkName>.mem.out` in the current directory.
 
-Step by step mode is reserved for later implementation:
+Step by step mode:
 
 ```bash
 ./isaSim -s <assembly file> <memory file>

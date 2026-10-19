@@ -22,8 +22,11 @@ public final class Main {
                 return;
             }
 
-            // TODO: Implement step-by-step mode using Simulator.executeOne().
-            System.err.println("Step-by-step mode is not implemented yet.");
+            if (args[0].equals("-s")) {
+                simulator.stepThrough();
+                return;
+            }
+            
             System.exit(2);
         } catch (SimulatorException e) {
             System.err.println("Simulator error: " + e.getMessage());

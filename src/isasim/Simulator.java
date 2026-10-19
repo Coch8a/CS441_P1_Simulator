@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 
 public final class Simulator {
     private static final List<String> SUPPORTED_INSTRUCTIONS = List.of(
@@ -47,7 +48,57 @@ public final class Simulator {
         writeOutputs();
     }
 
-    // TODO: Step-by-step mode should call this once per Enter press and display CPU state.
+    /**
+     * Runs the simulator in step-by-step mode, allowing the user to execute one instruction at a time or specify a number of steps to execute.
+     * @throws SimulatorException
+     */
+    public void stepThrough() throws SimulatorException {
+        Scanner scanner = new Scanner(System.in);
+        int stepsToRun = 0;
+        while (!cpu.isHalted()) {
+            displayState();
+            if (stepsToRun <= 0) {
+                System.out.print("Press enter to execute next instruction (or enter step count number): ");
+                String input = scanner.nextLine().trim();
+                if (!input.isEmpty()) {
+                    try {
+                        stepsToRun = Integer.parseInt(input);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid number, stepping 1 instruction.");
+                        stepsToRun = 1;
+                    }
+                } else { 
+                    stepsToRun = 1;
+                }
+            }
+            executeOne();
+            stepsToRun--;
+        }
+        System.out.println("\n--- Program Halted ---");
+        displayState();
+        printInstructionCounts();
+        writeOutputs();
+    }
+
+    /**
+     * Displays the current state of the CPU, including the program counter, executed instruction count, comparison value, and register values.
+     * @throws SimulatorException
+     */
+    private void displayState() throws SimulatorException {
+        System.out.println("--------------------------------------------------");
+        System.out.printf("PC: 0x%08X  |  Executed Instructions: %d  |  Comparison: %d%n", cpu.getPc(), totalInstructions, cpu.getComparison());
+        System.out.println("--------------------------------------------------");
+        System.out.println("Registers:");
+        for (int i = 0; i < 16; i += 4) {
+            System.out.printf("  r%-2d: 0x%08X (%-10d) | r%-2d: 0x%08X (%-10d) | r%-2d: 0x%08X (%-10d) | r%-2d: 0x%08X (%-10d)%n",
+                    i,     cpu.getRegister(i),     cpu.getRegister(i),
+                    i + 1, cpu.getRegister(i + 1), cpu.getRegister(i + 1),
+                    i + 2, cpu.getRegister(i + 2), cpu.getRegister(i + 2),
+                    i + 3, cpu.getRegister(i + 3), cpu.getRegister(i + 3));
+        }
+        System.out.println("--------------------------------------------------");
+    }
+
     public void executeOne() throws SimulatorException {
         Instruction instruction = program.instructionAt(cpu.getPc());
         if (instruction == null) {

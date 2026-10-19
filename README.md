@@ -15,6 +15,8 @@ Build the simulator:
 ./build.sh
 
 Run the simulator in run through mode:
+./isaSim -r Benchmark_ISA.asm Benchmark_ISA.mem
+./isaSim -r MAXFINDER_INT.asm MAXFINDER_INT.mem
 ./isaSim -r MAXFINDER_FP.asm MAXFINDER_FP.mem
 
 After the simulator finishes, it will create:
@@ -26,9 +28,6 @@ cat MAXFINDER_FP.instrCount
 
 View the final memory output:
 cat MAXFINDER_FP.mem.out
-
-For the current floating point MAXFINDER benchmark, the output memory file should contain:
-0110,53ED8000
 
 
 ## Onyx
